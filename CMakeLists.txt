@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.16)
-project(certify VERSION 0.1 LANGUAGES CXX)
+project(certify VERSION 0.1.3 LANGUAGES CXX)
 
 find_package(Boost
              COMPONENTS
@@ -24,6 +24,10 @@ target_include_directories(core INTERFACE
 if(MSVC)
     target_link_libraries(core INTERFACE Crypt32.lib)
 endif()
+
+if (APPLE)
+    target_link_libraries(core INTERFACE "-framework Foundation" "-framework Security")
+endif ()
 
 target_link_libraries(
     core
