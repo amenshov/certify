@@ -57,8 +57,3 @@ install(EXPORT certifyTargets
         NAMESPACE certify::
         DESTINATION lib/cmake/certify)
 
-include(CTest)
-if(BUILD_TESTING)
-    enable_testing()
-    add_subdirectory(tests)
-endif()
