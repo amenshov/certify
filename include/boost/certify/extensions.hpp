@@ -4,6 +4,7 @@
 #include <boost/certify/detail/config.hpp>
 
 #include <boost/asio/ssl/stream.hpp>
+#include <boost/beast/ssl/ssl_stream.hpp>
 #include <boost/utility/string_view.hpp>
 
 namespace boost
@@ -24,6 +25,17 @@ sni_hostname(asio::ssl::stream<AsyncStream>& stream,
 template<class AsyncStream>
 void
 sni_hostname(asio::ssl::stream<AsyncStream>& stream,
+             std::string const& hostname);
+
+template<class AsyncStream>
+void
+sni_hostname(beast::ssl_stream<AsyncStream>& stream,
+             std::string const& hostname,
+             system::error_code& ec);
+
+template<class AsyncStream>
+void
+sni_hostname(beast::ssl_stream<AsyncStream>& stream,
              std::string const& hostname);
 
 } // namespace certify

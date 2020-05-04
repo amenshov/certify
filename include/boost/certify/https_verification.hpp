@@ -4,6 +4,7 @@
 #include <boost/certify/detail/config.hpp>
 
 #include <boost/asio/ssl/stream.hpp>
+#include <boost/beast/ssl/ssl_stream.hpp>
 #include <boost/utility/string_view.hpp>
 
 namespace boost
@@ -52,6 +53,16 @@ set_server_hostname(asio::ssl::stream<NextLayer>& stream,
 template<class NextLayer>
 void
 set_server_hostname(asio::ssl::stream<NextLayer>& stream, string_view hostname);
+
+template<class NextLayer>
+void
+set_server_hostname(beast::ssl_stream<NextLayer>& stream,
+                    string_view hostname,
+                    system::error_code& ec);
+
+template<class NextLayer>
+void
+set_server_hostname(beast::ssl_stream<NextLayer>& stream, string_view hostname);
 
 void
 enable_native_https_server_verification(asio::ssl::context& context);

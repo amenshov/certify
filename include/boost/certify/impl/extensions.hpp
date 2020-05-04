@@ -20,14 +20,13 @@ sni_hostname(asio::ssl::stream<AsyncStream> const& stream)
     return {hostname};
 }
 
-template<class AsyncStream>
-void
-sni_hostname(asio::ssl::stream<AsyncStream>& stream,
+inline void
+sni_hostname(::SSL* handle,
              std::string const& hostname,
              system::error_code& ec)
 {
     auto ret =
-      SSL_set_tlsext_host_name(stream.native_handle(), hostname.c_str());
+      SSL_set_tlsext_host_name(handle, hostname.c_str());
     if (ret == 0)
         ec = {static_cast<int>(::ERR_get_error()),
               asio::error::get_ssl_category()};
@@ -38,6 +37,35 @@ sni_hostname(asio::ssl::stream<AsyncStream>& stream,
 template<class AsyncStream>
 void
 sni_hostname(asio::ssl::stream<AsyncStream>& stream,
+             std::string const& hostname,
+             system::error_code& ec)
+{
+    sni_hostname(stream.native_handle(), hostname, ec);
+}
+
+template<class AsyncStream>
+void
+sni_hostname(asio::ssl::stream<AsyncStream>& stream,
+             std::string const& hostname)
+{
+    system::error_code ec;
+    sni_hostname(stream, hostname, ec);
+    if (ec)
+        boost::throw_exception(system::system_error{ec});
+}
+
+template<class AsyncStream>
+void
+sni_hostname(beast::ssl_stream<AsyncStream>& stream,
+             std::string const& hostname,
+             system::error_code& ec)
+{
+    sni_hostname(stream.native_handle(), hostname, ec);
+}
+
+template<class AsyncStream>
+void
+sni_hostname(beast::ssl_stream<AsyncStream>& stream,
              std::string const& hostname)
 {
     system::error_code ec;

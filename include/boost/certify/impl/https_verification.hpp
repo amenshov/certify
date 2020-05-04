@@ -27,6 +27,25 @@ set_server_hostname(asio::ssl::stream<NextLayer>& stream, string_view hostname)
         boost::throw_exception(system::system_error{ec});
 }
 
+template<class NextLayer>
+void
+set_server_hostname(beast::ssl_stream<NextLayer>& stream,
+                    string_view hostname,
+                    system::error_code& ec)
+{
+    detail::set_server_hostname(stream.native_handle(), hostname, ec);
+}
+
+template<class NextLayer>
+void
+set_server_hostname(beast::ssl_stream<NextLayer>& stream, string_view hostname)
+{
+    system::error_code ec;
+    certify::set_server_hostname(stream, hostname, ec);
+    if (ec)
+        boost::throw_exception(system::system_error{ec});
+}
+
 } // namespace certify
 } // namespace boost
 
